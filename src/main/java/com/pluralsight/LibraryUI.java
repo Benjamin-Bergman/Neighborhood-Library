@@ -62,7 +62,8 @@ final class LibraryUI extends BasicWindow {
                 "Check out a book",
                 bk -> !bk.isCheckedOut(),
                 bk -> "%s - %s".formatted(bk.getIsbn(), bk.getTitle()),
-                this::checkoutBook);
+                this::checkoutBook,
+                "Sorry, there's nothing to check out right now.");
     }
 
     @SuppressWarnings("FeatureEnvy")
@@ -71,15 +72,31 @@ final class LibraryUI extends BasicWindow {
                 "Check in a book",
                 Book::isCheckedOut,
                 bk -> "[%s] %s - %s".formatted(bk.getCheckedOutTo(), bk.getIsbn(), bk.getTitle()),
-                this::checkinBook);
+                this::checkinBook,
+                "Sorry, there's nothing to check in right now.");
     }
 
-    private void showBookList(String title, Predicate<? super Book> filter, Function<? super Book, String> display, Consumer<? super Book> function) {
+    private void showBookList(
+            String title,
+            Predicate<? super Book> filter,
+            Function<? super Book, String> display,
+            Consumer<? super Book> function,
+            String failureMessage) {
+        var usedBooks = Arrays.stream(books).filter(filter).toList();
+
+        if (usedBooks.isEmpty()) {
+            MessageDialog.showMessageDialog(
+                    getTextGUI(),
+                    "Error",
+                    failureMessage,
+                    MessageDialogButton.OK
+            );
+            return;
+        }
+
         var builder = new ActionListDialogBuilder()
                 .setTitle(title)
                 .setDescription("Choose a book");
-
-        var usedBooks = Arrays.stream(books).filter(filter).toList();
 
         for (var book : usedBooks)
             //noinspection ObjectAllocationInLoop
