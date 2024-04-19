@@ -115,8 +115,7 @@ final class LibraryUI extends BasicWindow {
         }
 
         var builder = new ActionListDialogBuilder()
-                .setTitle(title)
-                .setDescription("Choose a book");
+                .setTitle(title);
 
         for (var book : usedBooks)
             //noinspection ObjectAllocationInLoop
