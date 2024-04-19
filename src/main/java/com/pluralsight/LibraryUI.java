@@ -5,6 +5,7 @@ package com.pluralsight;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.LinearLayout.*;
 import com.googlecode.lanterna.gui2.dialogs.*;
+import com.googlecode.lanterna.input.*;
 import com.googlecode.lanterna.terminal.*;
 
 import java.io.*;
@@ -54,6 +55,19 @@ final class LibraryUI extends BasicWindow {
 
             screen.stopScreen();
         }
+    }
+
+    @Override
+    public boolean handleInput(KeyStroke key) {
+        if (key.getKeyType() == KeyType.Character)
+            //noinspection SwitchStatementWithoutDefaultBranch
+            switch (key.getCharacter()) {
+                case 'c', 'C' -> showAvailable();
+                case 'r', 'R' -> showCheckedOut();
+                case 'e', 'E' -> close();
+            }
+
+        return super.handleInput(key);
     }
 
     @SuppressWarnings("FeatureEnvy")
