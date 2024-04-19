@@ -2,31 +2,48 @@
 
 package com.pluralsight;
 
+import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.LinearLayout.*;
 import com.googlecode.lanterna.terminal.*;
 
 import java.io.*;
+import java.util.*;
 
 /**
  * Represents a library user interface.
  */
-public class LibraryUI {
+public final class LibraryUI extends BasicWindow {
+    private LibraryUI() {
+        super("Neighborhood Library");
+
+        setHints(List.of(Hint.CENTERED));
+
+        Panel panel = new Panel();
+        panel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
+
+        var justify = LinearLayout.createLayoutData(Alignment.Fill, GrowPolicy.CanGrow);
+        panel.addComponent(new Button("Show available books").setLayoutData(justify));
+        panel.addComponent(new Button("Show checked-out books").setLayoutData(justify));
+        panel.addComponent(new Button("Exit", this::close).setLayoutData(justify));
+        setComponent(panel);
+    }
+
     /**
      * Entry point to run a library interface.
      *
      * @param args Ignored.
-     * @throws IOException If terminal creation fails.
+     * @throws IOException On an IO error.
      */
     public static void main(String[] args) throws IOException {
-        new LibraryUI().runInterface();
-    }
+        try (var screen = new DefaultTerminalFactory().createScreen()) {
+            screen.startScreen();
 
-    private void runInterface() throws IOException {
-        TerminalFactory terminalFactory = new DefaultTerminalFactory();
-        try (var term = terminalFactory.createTerminal()) {
-            term.putString("Howdy");
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
+            var gui = new MultiWindowTextGUI(screen);
+            var window = new LibraryUI();
+            gui.addWindow(window);
+            window.waitUntilClosed();
 
+            screen.stopScreen();
         }
     }
 }
