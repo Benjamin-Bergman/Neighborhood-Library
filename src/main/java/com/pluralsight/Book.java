@@ -3,7 +3,7 @@
 package com.pluralsight;
 
 @SuppressWarnings("NewClassNamingConvention")
-class Book {
+final class Book {
     @SuppressWarnings("FieldNamingConvention")
     private static int idCounter = 1;
     @SuppressWarnings("FieldNamingConvention")
