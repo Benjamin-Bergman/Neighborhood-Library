@@ -11,26 +11,31 @@ import com.googlecode.lanterna.terminal.*;
 import java.io.*;
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.*;
 
 final class LibraryUI extends BasicWindow {
-    @SuppressWarnings({"SpellCheckingInspection", "HardcodedFileSeparator"})
-    private final Book[] books = {
-            new Book("1853260088", "Moby Dick"),
-            new Book("0593084691", "Humble Pi: When Math Goes Wrong in the Real World"),
-            new Book("1593272812", "Land of Lisp: Learn to Program in Lisp, One Game at a Time!"),
-            new Book("0310450470", "NIV Bible"),
-            new Book("142261039X", "Artscroll English Tanach"),
-            new Book("097730096X", "The Clear Quran"),
-            new Book("133813437X", "The Silver Eyes: Five Nights at Freddy’s"),
-            new Book("1568811306", "Winning Ways for Your Mathematical Plays: Volume 1"),
-            new Book("0743477111", "Romeo and Juliet"),
-            new Book("0765382032", "The Three-Body Problem"),
-            new Book("0762499869", "Math Games with Bad Drawings: 75 1/4 Simple, Challenging, Go-Anywhere Games―And Why They Matter"),
-            new Book("0525537090", "How To: Absurd Scientific Advice for Common Real-World Problems")
-    };
+    private static final int ISBN_LENGTH = 10;
+    private final Collection<Book> books;
 
+    @SuppressWarnings("ReassignedVariable")
     private LibraryUI() {
         super("Library Tracker");
+
+        Collection<Book> tempBooks = null;
+        try (InputStream is = LibraryUI.class.getResourceAsStream("/Books.txt")) {
+            if (is != null)
+                tempBooks = new BufferedReader(new InputStreamReader(is))
+                        .lines()
+                        .parallel()
+                        .map(s -> new Book(s.substring(0, ISBN_LENGTH), s.substring(ISBN_LENGTH)))
+                        .collect(Collectors.toList());
+        } catch (IOException ignored) {
+        }
+        books = (tempBooks == null) ? List.of(new Book[]{
+                new Book("0310450470", "NIV Bible"),
+                new Book("142261039X", "Artscroll English Tanach"),
+                new Book("097730096X", "The Clear Quran"),
+        }) : tempBooks;
 
         setHints(List.of(Hint.CENTERED));
 
@@ -96,7 +101,8 @@ final class LibraryUI extends BasicWindow {
             Function<? super Book, String> display,
             Consumer<? super Book> function,
             String failureMessage) {
-        var usedBooks = Arrays.stream(books).filter(filter).toList();
+
+        var usedBooks = books.stream().filter(filter).toList();
 
         if (usedBooks.isEmpty()) {
             MessageDialog.showMessageDialog(
