@@ -33,6 +33,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.LibraryUI.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "code.cleanup.on.save": "true",
     "ignore.virus.scanning.warn.message": "true",
@@ -67,7 +68,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1712861896002</updated>
-      <workItem from="1713550071055" duration="311000" />
+      <workItem from="1713550071055" duration="3099000" />
     </task>
     <servers />
   </component>
