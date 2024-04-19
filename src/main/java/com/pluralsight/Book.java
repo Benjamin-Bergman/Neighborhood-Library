@@ -2,8 +2,12 @@
 
 package com.pluralsight;
 
-@SuppressWarnings("NewClassNamingConvention")
-final class Book {
+/**
+ * Represents a single book. Can be checked out to a specific person.
+ * Otherwise, the book itself is immutable.
+ */
+@SuppressWarnings({"NewClassNamingConvention", "WeakerAccess"})
+public final class Book {
     @SuppressWarnings("FieldNamingConvention")
     private static int idCounter = 1;
     @SuppressWarnings("FieldNamingConvention")
@@ -14,8 +18,12 @@ final class Book {
     private boolean checkedOut;
     private String checkedOutTo = "";
 
+    /**
+     * @param isbn  The ISBN of this book.
+     * @param title The title of this book.
+     */
     @SuppressWarnings("ParameterHidesMemberVariable")
-    Book(String isbn, String title) {
+    public Book(String isbn, String title) {
         this.isbn = isbn;
         this.title = title;
         checkedOut = false;
@@ -24,33 +32,55 @@ final class Book {
         idCounter++;
     }
 
-    @SuppressWarnings("WeakerAccess")
-    int getId() {
+    /**
+     * @return The unique ID for this book.
+     */
+    public int getId() {
         return id;
     }
 
-    String getIsbn() {
+    /**
+     * @return This book's ISBN.
+     */
+    public String getIsbn() {
         return isbn;
     }
 
-    String getTitle() {
+    /**
+     * @return This book's title.
+     */
+    public String getTitle() {
         return title;
     }
 
-    boolean isCheckedOut() {
+    /**
+     * @return {@code true} if someone has checked out this book.
+     */
+    public boolean isCheckedOut() {
         return checkedOut;
     }
 
-    String getCheckedOutTo() {
+    /**
+     * @return The person who checked out this book, or {@code ""} if no such person exists.
+     */
+    public String getCheckedOutTo() {
         return checkedOutTo;
     }
 
-    void checkout(String name) {
+    /**
+     * Checks this book out to the specified person.
+     *
+     * @param name The person checking out the book.
+     */
+    public void checkout(String name) {
         checkedOut = true;
         checkedOutTo = name;
     }
 
-    void checkin() {
+    /**
+     * Check in this book, meaning no person has it checked out.
+     */
+    public void checkin() {
         checkedOut = false;
         checkedOutTo = "";
     }

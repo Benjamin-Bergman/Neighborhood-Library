@@ -13,12 +13,18 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-final class LibraryUI extends BasicWindow {
+/**
+ * Represents a library management application.
+ */
+public final class LibraryUI extends BasicWindow {
     private static final int ISBN_LENGTH = 10;
     private final Collection<Book> books;
 
-    @SuppressWarnings("ReassignedVariable")
-    private LibraryUI() {
+    /**
+     * Creates a new {@link BasicWindow} that runs this application.
+     */
+    @SuppressWarnings({"ReassignedVariable", "WeakerAccess"})
+    public LibraryUI() {
         super("Library Tracker");
 
         Collection<Book> tempBooks = null;
@@ -31,6 +37,7 @@ final class LibraryUI extends BasicWindow {
                         .collect(Collectors.toList());
         } catch (IOException ignored) {
         }
+        //noinspection SpellCheckingInspection
         books = (tempBooks == null) ? List.of(new Book[]{
                 new Book("0310450470", "NIV Bible"),
                 new Book("142261039X", "Artscroll English Tanach"),
@@ -49,6 +56,12 @@ final class LibraryUI extends BasicWindow {
         setComponent(panel);
     }
 
+    /**
+     * Runs the program as a standalone application.
+     *
+     * @param args Unused.
+     * @throws IOException Thrown if TUI creation fails.
+     */
     public static void main(String[] args) throws IOException {
         try (var screen = new DefaultTerminalFactory().createScreen()) {
             screen.startScreen();
