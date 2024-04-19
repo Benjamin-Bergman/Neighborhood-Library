@@ -30,7 +30,7 @@ final class LibraryUI extends BasicWindow {
     };
 
     private LibraryUI() {
-        super("Neighborhood Library");
+        super("Library Tracker");
 
         setHints(List.of(Hint.CENTERED));
 
@@ -73,7 +73,7 @@ final class LibraryUI extends BasicWindow {
     @SuppressWarnings("FeatureEnvy")
     private void showAvailable() {
         showBookList(
-                "Check out a book",
+                "Check Out Book",
                 bk -> !bk.isCheckedOut(),
                 bk -> "%s - %s".formatted(bk.getIsbn(), bk.getTitle()),
                 this::checkoutBook,
@@ -83,7 +83,7 @@ final class LibraryUI extends BasicWindow {
     @SuppressWarnings("FeatureEnvy")
     private void showCheckedOut() {
         showBookList(
-                "Check in a book",
+                "Check In Book",
                 Book::isCheckedOut,
                 bk -> "[%s] %s - %s".formatted(bk.getCheckedOutTo(), bk.getIsbn(), bk.getTitle()),
                 this::checkinBook,
@@ -122,7 +122,7 @@ final class LibraryUI extends BasicWindow {
     private void checkoutBook(Book bk) {
         String name = TextInputDialog.showDialog(
                 getTextGUI(),
-                "Name",
+                "Enter Name",
                 "Please enter you name for our records.",
                 "");
 
