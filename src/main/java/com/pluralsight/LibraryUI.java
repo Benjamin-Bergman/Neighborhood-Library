@@ -31,17 +31,17 @@ public final class LibraryUI extends BasicWindow {
         try (InputStream is = LibraryUI.class.getResourceAsStream("/Books.txt")) {
             if (is != null)
                 tempBooks = new BufferedReader(new InputStreamReader(is))
-                        .lines()
-                        .parallel()
-                        .map(s -> new Book(s.substring(0, ISBN_LENGTH), s.substring(ISBN_LENGTH)))
-                        .collect(Collectors.toList());
+                    .lines()
+                    .parallel()
+                    .map(s -> new Book(s.substring(0, ISBN_LENGTH), s.substring(ISBN_LENGTH)))
+                    .collect(Collectors.toList());
         } catch (IOException ignored) {
         }
         //noinspection SpellCheckingInspection
         books = (tempBooks == null) ? List.of(new Book[]{
-                new Book("0310450470", "NIV Bible"),
-                new Book("142261039X", "Artscroll English Tanach"),
-                new Book("097730096X", "The Clear Quran"),
+            new Book("0310450470", "NIV Bible"),
+            new Book("142261039X", "Artscroll English Tanach"),
+            new Book("097730096X", "The Clear Quran"),
         }) : tempBooks;
 
         setHints(List.of(Hint.CENTERED));
@@ -91,44 +91,44 @@ public final class LibraryUI extends BasicWindow {
     @SuppressWarnings("FeatureEnvy")
     private void showAvailable() {
         showBookList(
-                "Check Out Book",
-                bk -> !bk.isCheckedOut(),
-                bk -> "%s - %s".formatted(bk.getIsbn(), bk.getTitle()),
-                this::checkoutBook,
-                "Sorry, there's nothing to check out right now.");
+            "Check Out Book",
+            bk -> !bk.isCheckedOut(),
+            bk -> "%s - %s".formatted(bk.getIsbn(), bk.getTitle()),
+            this::checkoutBook,
+            "Sorry, there's nothing to check out right now.");
     }
 
     @SuppressWarnings("FeatureEnvy")
     private void showCheckedOut() {
         showBookList(
-                "Check In Book",
-                Book::isCheckedOut,
-                bk -> "[%s] %s - %s".formatted(bk.getCheckedOutTo(), bk.getIsbn(), bk.getTitle()),
-                this::checkinBook,
-                "Sorry, there's nothing to check in right now.");
+            "Check In Book",
+            Book::isCheckedOut,
+            bk -> "[%s] %s - %s".formatted(bk.getCheckedOutTo(), bk.getIsbn(), bk.getTitle()),
+            this::checkinBook,
+            "Sorry, there's nothing to check in right now.");
     }
 
     private void showBookList(
-            String title,
-            Predicate<? super Book> filter,
-            Function<? super Book, String> display,
-            Consumer<? super Book> function,
-            String failureMessage) {
+        String title,
+        Predicate<? super Book> filter,
+        Function<? super Book, String> display,
+        Consumer<? super Book> function,
+        String failureMessage) {
 
         var usedBooks = books.stream().filter(filter).toList();
 
         if (usedBooks.isEmpty()) {
             MessageDialog.showMessageDialog(
-                    getTextGUI(),
-                    "Error",
-                    failureMessage,
-                    MessageDialogButton.OK
+                getTextGUI(),
+                "Error",
+                failureMessage,
+                MessageDialogButton.OK
             );
             return;
         }
 
         var builder = new ActionListDialogBuilder()
-                .setTitle(title);
+            .setTitle(title);
 
         for (var book : usedBooks)
             //noinspection ObjectAllocationInLoop
@@ -139,34 +139,34 @@ public final class LibraryUI extends BasicWindow {
 
     private void checkoutBook(Book bk) {
         String name = TextInputDialog.showDialog(
-                getTextGUI(),
-                "Enter Name",
-                "Please enter you name for our records.",
-                "");
+            getTextGUI(),
+            "Enter Name",
+            "Please enter you name for our records.",
+            "");
 
         if ((name == null) || name.isEmpty() || name.isBlank()) {
             MessageDialog.showMessageDialog(
-                    getTextGUI(),
-                    "Canceled",
-                    "The book has not been checked out.",
-                    MessageDialogButton.OK);
+                getTextGUI(),
+                "Canceled",
+                "The book has not been checked out.",
+                MessageDialogButton.OK);
             return;
         }
 
         bk.checkout(name);
         MessageDialog.showMessageDialog(
-                getTextGUI(),
-                "Success",
-                "Thank you for checking out %s.".formatted(bk.getTitle()),
-                MessageDialogButton.OK);
+            getTextGUI(),
+            "Success",
+            "Thank you for checking out %s.".formatted(bk.getTitle()),
+            MessageDialogButton.OK);
     }
 
     private void checkinBook(Book bk) {
         bk.checkin();
         MessageDialog.showMessageDialog(
-                getTextGUI(),
-                "Success",
-                "Thank you for returning %s.".formatted(bk.getTitle()),
-                MessageDialogButton.OK);
+            getTextGUI(),
+            "Success",
+            "Thank you for returning %s.".formatted(bk.getTitle()),
+            MessageDialogButton.OK);
     }
 }

@@ -95,11 +95,23 @@
       <option name="presentableId" value="Default" />
       <updated>1712861896002</updated>
       <workItem from="1713550071055" duration="15477000" />
-      <workItem from="1713565782403" duration="702000" />
+      <workItem from="1713565782403" duration="760000" />
+      <workItem from="1713790617893" duration="1027000" />
+      <workItem from="1713813174790" duration="258000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/pluralsight/LibraryUI.java</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

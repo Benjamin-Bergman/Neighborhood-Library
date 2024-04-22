@@ -22,7 +22,6 @@ public final class Book {
      * @param isbn  The ISBN of this book.
      * @param title The title of this book.
      */
-    @SuppressWarnings("ParameterHidesMemberVariable")
     public Book(String isbn, String title) {
         this.isbn = isbn;
         this.title = title;
@@ -30,13 +29,6 @@ public final class Book {
         id = idCounter;
         //noinspection AssignmentToStaticFieldFromInstanceMethod
         idCounter++;
-    }
-
-    /**
-     * @return The unique ID for this book.
-     */
-    public int getId() {
-        return id;
     }
 
     /**
@@ -86,12 +78,19 @@ public final class Book {
     }
 
     @Override
+    public int hashCode() {
+        return getId();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return (obj instanceof Book other) && (getId() == other.getId());
     }
 
-    @Override
-    public int hashCode() {
-        return getId();
+    /**
+     * @return The unique ID for this book.
+     */
+    public int getId() {
+        return id;
     }
 }
